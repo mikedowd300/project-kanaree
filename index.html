@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rules</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <style>
+      .mike-dowd-300 {
+        max-width: 90%;
+        height: 100vh;
+        background-color: #fff;
+        display: flex;
+        overflow: scroll;
+        padding-top: 24px;
+        flex-direction: column;
+      }
+
+      .mike-dowd-300 .table-wrapper {
+        width: 100%;
+        border-radius: 1px;
+        max-height: 400px;
+        overflow: scroll;
+        border-bottom: 1px solid grey;
+      }
+
+      .mike-dowd-300 .table-wrapper .table-options {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 18px;
+      }
+
+      .mike-dowd-300 .table-wrapper .table-options .rule-property {
+        margin-right: 12px;
+        font-size: 10px;
+      }
+
+      .mike-dowd-300 .table-wrapper .table-options .rule-property option.option-header {
+        background-color: grey;
+        font-weight: bold;
+      }
+
+      .mike-dowd-300 button.submit-rule {
+        padding: 4px 20px;
+        border-radius: 20px;
+        border: none;
+        color: white;
+        background-color: grey;
+        font-size: 12px;
+        font-family: 'Arial Narrow';
+        font-weight: 500;
+        display: inline;
+      }
+
+      .mike-dowd-300 button.submit-rule.enabled {
+        background-color: #0073D2;
+      }
+
+      .mike-dowd-300 button.submit-rule.enabled:hover {
+        cursor: pointer;
+      }
+
+      .mike-dowd-300 .table-wrapper .header-wrapper {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .mike-dowd-300 .table-wrapper .header-wrapper .heading {
+        width: 20%;
+        text-align: center;
+        height: 32px;
+        font-size: 16px;
+        line-height: 32px;
+        background-color: #F5F5F5;
+        font-family: 'Arial Narrow';
+        font-weight: 400;
+        border: 1px solid #E8E8E8;
+        border-right: none;
+      }
+
+      .mike-dowd-300 .table-wrapper .header-wrapper .heading:last-child {
+        border-right: 1px solid #E8E8E8;
+      }
+
+      .table-row {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .row-cell {
+        width: 20%;
+        border-left: 1px solid #E8E8E8;
+        border-bottom:  1px solid #E8E8E8;
+        text-align: center;
+        padding: 4px 0;
+        font-size: 16px;
+        font-family: 'Arial Narrow';
+      }
+
+      .row-cell:last-child {
+        border-right: 1px solid #E8E8E8;
+      }
+
+      .delete-button {
+        width: calc(100% / 8);
+        padding: 8px;
+        margin-top: 12px;
+        margin-left: calc((100% / 8) * 7);
+        border-radius: 20px;
+        border: none;
+        color: white;
+        
+        background-color: grey;
+        font-size: 12px;
+        font-family: 'Arial Narrow';
+        font-weight: 500;
+      }
+
+      .delete-button.enabled {
+        background-color: #0073D2;
+      }
+
+      .delete-button.enabled:hover {
+        cursor: pointer;
+      }
+
+      .dropdowns-wrapper {
+        width: 100%;
+        background-color: #fff;
+        display: flex;
+        margin-bottom: 16px;
+      }
+
+      .dropdowns-wrapper .option {
+        font-family: 'Arial Narrow';
+      }
+
+      .dropdown .dropbtn .symbol {
+        margin-left: 12px;
+      }
+
+      .dropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 80px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown  .dropdown-content.show {
+        display: block;
+      }
+
+      .option.selected {
+        background-color: #3498DB;
+        color: #fff;
+        border-bottom: 1px solid white;
+      }
+
+      .option.selected:last-child {
+        border-bottom: none;
+      }
+
+      .dropbtn {
+        background-color: #fff;
+        color: clack;
+        padding: 4px 10px;
+        font-size: 12px;
+        border: 1px solid black;
+        border-radius: 3px;
+        cursor: pointer;
+        min-width: 80px;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+      }
+
+      .dropbtn:hover {
+        border: 1px solid grey;
+      }
+
+      .dropdowns-wrapper .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-right: 12px;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 4px 10px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown-content a:hover {
+        color: grey;
+      }
+
+      .dropdown-content a.selected:hover {
+        color: #e6e6e6;
+      }
+
+      .show {
+        display:block;
+      }
+
+      .add-new-wrapper {
+        color: #3498DB;
+        background-color: #ddd;
+        height: 30px;
+        padding: 0;
+      }
+
+      .add-new-wrapper .add-new-text {
+        padding-left: 12px;
+        width: 95%;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        font-family: 'Arial Narrow';
+      }
+
+      .add-new-wrapper .add-new-input {
+        width: 73%;
+        height: 30px;
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 16px;
+        font-family: 'Arial Narrow';
+        margin-left: 1px;
+      }
+
+      .add-new-wrapper .add-new-input::placeholder {
+        font-size: 14px;
+      }
+
+      .add-new-wrapper .add-new-text:hover {
+        color: #80bfff;
+      }
+
+      .add-new-wrapper .add-new-text.hide, .add-new-wrapper .add-new-input.hide {
+        display: none;
+      }
+    </style>
+    <div class="mike-dowd-300">
+      <div class="dropdowns-wrapper"></div>
+      <div class="table-wrapper">
+        <div class="header-wrapper">
+          <div class="heading">ID</div>
+          <div class="heading">Site</div>
+          <div class="heading">Source</div>
+          <div class="heading">Medium</div>
+          <div class="heading">Campaign</div>
+          <div class="heading">Content</div>
+          <div class="heading">Term</div>
+          <div class="heading">Select</div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      const baseUrl = 'http://localhost:8080'; //'https://538f9qa745.execute-api.us-west-2.amazonaws.com';
+      const siteId = (window['logged_in_user'] && window['logged_in_user']["RECORD_ID"]) ? window['logged_in_user']["RECORD_ID"] : '654';
+      const initialOptionHeaders = { source: 'Source', medium: 'Medium', campaign: 'Campaign', content: 'Content', term: 'Term'};
+      let optionKeys = [ 'source', 'medium', 'campaign', 'content', 'term' ];
+      let optionHeaders = { source: 'Source', medium: 'Medium', campaign: 'Campaign', content: 'Content', term: 'Term'};
+      let selectedOptionLists = { source: [], medium: [], campaign: [], content: [], term: [] };
+      let optionLists = {'source': [], 'medium': [], 'campaign': [], 'content': [], 'term': [] };
+      let optionListsKeys = Object.keys(optionLists);
+      let submitButtonEnabled = false;
+      let dropdownConstantRows = [];
+      let rules = [];
+      let activeRuleRows = []
+      let ruleColumnsBySelectionOrder = [];
+      let IdsToDeleteBy = [];
+
+      $.delete = async (url, data, callback) => await $.ajax({ url, data, type: 'POST', success: callback });
+
+      deleteRules = async () => await $.delete(`${baseUrl}/deleterule`, { s_id: siteId, ruleId: IdsToDeleteBy }, () => onSuccess());
+
+      getRulesById = async () => await $.get( `${baseUrl}/getrules?site_id=${siteId}`);
+
+      const isValidPayload = ({ data }) => data?.content?.length > 0 || data?.term?.length > 0 || data?.campaign?.length > 0 || (Object.keys(data).length >= 2)
+
+      onSuccess = async () => {
+        rules = await getRulesById();
+        activeRuleRows = rules.map(() => true);
+        selectedOptionLists = { source: [], medium: [], campaign: [], content: [], term: [] };
+        optionHeaders = { ...initialOptionHeaders };
+        optionListsKeys
+          .map(key => removeDuplicates(rules.map(row => row[key])))
+          .forEach((list, i) => optionLists[optionListsKeys[i]] = list);
+        eraseTable();
+        createTable(rules);
+      }
+
+      sanitizeGetRulesPayload = () => {
+        const newPayload = {};
+        optionListsKeys.forEach(key => {
+          if(selectedOptionLists[key].length > 0) {
+            newPayload[key] = selectedOptionLists[key];
+          }
+        })
+        return { site: siteId, data: newPayload };
+      }
+
+      const updateOptionHeaders = () => {
+        optionKeys.forEach(
+          key => optionHeaders[key] = ruleColumnsBySelectionOrder?.find(sel => sel.type === key)?.value 
+          || selectedOptionLists[key][0]
+          || initialOptionHeaders[key]
+        );
+        optionKeys.forEach(key => $(`.dropdown-${key} .dropbtn span:not(.symbol)`).text(optionHeaders[key]));
+      }
+
+      const union = (arrayA, arrayB) => {
+        const overlap = [];
+        arrayA.forEach(item => {
+          if(arrayB.includes(item)) {
+            overlap.push(item);
+          }
+        })
+        return overlap;
+      }
+
+      setDropdownConstant = () => {
+        const headerWhitelist = ['content', 'campaign', 'term'];
+        const headersBlacklist = ['source', 'medium']
+        rules.forEach((rule, index) => {
+          let headerVals = Object.keys(rule).filter(header => optionKeys.includes(header)).filter(header => rule[header])
+          if(headerVals.length === 1 && headerWhitelist.includes(headerVals[0])) {
+            dropdownConstantRows.push(index);
+          }
+        })
+        // rules.forEach((rule, index) => {
+        //   let headerVals = Object.keys(rule).filter(header => optionKeys.includes(header)).filter(header => rule[header])
+        //   if(headerVals.length >= 1 && union(headerVals, headersBlacklist).length === 0) {
+        //     dropdownConstantRows.push(index);
+        //   }
+        // })
+      }
+
+      removeDuplicates = data => {
+        let filteredData = [];
+        data.forEach(unit => {
+          if(!filteredData.includes(unit)) {
+            filteredData.push(unit);
+          }
+        })
+        return filteredData;
+      }
+
+      updateRuleColumnsBySelectionOrder = (valueObj, insert = true) => {
+        if(insert) {
+          ruleColumnsBySelectionOrder.push(valueObj);
+        } else {
+          ruleColumnsBySelectionOrder = [...ruleColumnsBySelectionOrder.filter(val => valueObj.type !== val.type && valueObj.value !== val.value)];
+        }
+      }
+
+      filterDropdowns = activeColumnType => {
+        let firstSelectedColumn = ruleColumnsBySelectionOrder[0]?.type || null;
+        let activeColumnRules = rules.map(rule => rule[activeColumnType]);
+        optionLists[activeColumnType] = (activeColumnType === firstSelectedColumn || !firstSelectedColumn)
+          ? removeDuplicates([...(activeColumnRules), ...selectedOptionLists[activeColumnType]])
+          : removeDuplicates([...(activeColumnRules.filter((rule, i) => activeRuleRows[i] && rule)), ...selectedOptionLists[activeColumnType]])
+      }
+
+      updateActiveRuleRows = (activeColumnType) => {
+        setDropdownConstant();
+        let activeColumnRules = rules.map(rule => rule[activeColumnType]);
+        activeRuleRows = activeColumnRules.map((rule, index) => selectedOptionLists[activeColumnType].includes(rule) || dropdownConstantRows.includes(index));
+      }
+
+      setMouseLeave = (addText, addInput) => {
+        setTimeout(() => $(addInput).on('mouseleave', () => hideInputField(addText, addInput)), 100);
+      }
+
+      makeDropdownsFromOptions = () => {
+        for(let list in optionLists) {
+          createNewDropdowns(list);
+        }
+      }
+
+      createNewRule = async () => {
+        if(submitButtonEnabled) {
+          await $.post(`${baseUrl}/newrules`, sanitizeGetRulesPayload(), () => onSuccess());
+        }
+      }
+
+      updateIdsToDeleteBy = ({ checked }, deleteId) => {
+        IdsToDeleteBy = checked ? [...IdsToDeleteBy, deleteId] : IdsToDeleteBy.filter(id => id !== deleteId);
+        const shouldEnableDeleteButton = IdsToDeleteBy.length > 0;
+        enableDeleteButton(shouldEnableDeleteButton);
+      }
+
+      hideInputField = (addText, addInput) => {
+        $(addInput).addClass('hide');
+        $(addText).removeClass('hide');
+      }
+
+      eraseDropdowns = () => {
+        const parentElem = $('.dropdowns-wrapper')[0];
+        $(parentElem).empty();
+      };
+
+      handleOptionSelect = (elem, type, event) => {
+        event.stopPropagation();
+        if($(elem).hasClass('selected')) {
+          $(elem).removeClass('selected');
+          selectedOptionLists[type] = [...selectedOptionLists[type].filter(option => option !== $(elem).text())]
+          updateRuleColumnsBySelectionOrder({type, value: $(elem).text()}, false);
+        } else {
+          $(elem).addClass('selected');
+          selectedOptionLists[type].push($(elem).text());
+          enableSubmitButton();
+          updateRuleColumnsBySelectionOrder({type, value: $(elem).text()});
+        }
+        updateOptionHeaders();
+      }
+
+      enableSubmitButton = () => {
+        submitButtonEnabled = isValidPayload(sanitizeGetRulesPayload());
+        const submitButton = $('.submit-rule')[0];
+        if(submitButtonEnabled) {
+          $(submitButton).addClass('enabled');
+        } else {
+          $(submitButton).removeClass('enabled');
+        }
+      }
+
+      updateDropdownOptions = (type) => {
+        filterDropdowns(type);
+        $('.select-option.dropdown-content').empty();
+        optionKeys.forEach(key => {
+          const dropDownList = $(`.dropdown-content-${key}`)[0];
+          addOptionsUI(dropDownList, key);
+        });
+      }
+
+      handleOpenCloseDropdown = (elem, type)=> {
+        updateDropdownOptions(type);
+        if($(elem).hasClass('show')) {
+          updateActiveRuleRows(type);
+          $(elem).removeClass('show');
+        } else {
+          $(elem).addClass('show');
+        }
+      }
+
+      addNewOption = (event, addText, addInput, dropDownList, type) => {
+        event.stopPropagation();
+        $(addText).addClass('hide');
+        $(addInput).removeClass('hide');
+        $(addInput).focus();
+        $(addInput).on('change', (e) => handleAddInputChange(e, addText, addInput, type, dropDownList));
+        $(addInput).on('mouseenter', (e) => setMouseLeave(addText, addInput));
+      }
+
+      addOptionsUI = (optionParent, type) => {
+        optionLists[type].filter(option => option !== null).forEach(option => {
+          $(optionParent).append(`<a class="option option-${type} option-${type}-${option}">${option}</a>`);
+          const newOption = $(`.option.option-${type}.option-${type}-${option}`)[0];
+          $(newOption).on('click', event => handleOptionSelect(newOption, type, event));
+        });
+        selectedOptionLists[type].forEach(option => {
+          if(optionLists[type].includes(option)) {
+            $(`.option-${type}-${option}`).addClass('selected');
+          }
+        });
+        createNewAddNewUI(optionParent, type);
+        const addOption = $(`.add-new-wrapper.add-new-wrapper-${type}`)[0];
+        const addText = $(`.add-new-text-${type}`)[0];
+        const addInput = $(`.add-new-input-${type}`)[0];
+        $(addOption).on('click', event => addNewOption(event, addText, addInput, optionParent, type));
+      }
+
+      handleAddInputChange = (event, addText, addInput, type, dropDownList) => {
+        event.stopPropagation();
+        $(addText).removeClass('hide');
+        $(addInput).addClass('hide');
+        $(dropDownList).removeClass('show');
+        if(!optionLists[type].includes($(addInput).val())) {
+          optionLists[type].push($(addInput).val());
+          selectedOptionLists[type].push($(addInput).val());
+          enableSubmitButton();
+          updateRuleColumnsBySelectionOrder({type, value: $(addInput).val()});
+        }
+        updateOptionHeaders();
+        eraseDropdowns();
+        makeDropdownsFromOptions();
+        createSubmitButton();
+      }
+
+      handleMouseLeave = (targetElem, type) => {
+        if($(targetElem).hasClass('show')) {
+          if((ruleColumnsBySelectionOrder.map(selection => selection.type)).includes(type)) {
+            handleOpenCloseDropdown(targetElem, type)
+          } else if($(targetElem).hasClass('show')) {
+            const addText = $(`.add-new-text-${type}`)[0];
+            const addInput = $(`.add-new-input-${type}`)[0];
+            $(targetElem).removeClass('show');
+            $(addText).removeClass('hide');
+            $(addInput).addClass('hide');
+          }
+        }
+      }
+
+      createDropDown = (type) => {
+        const dropdown = $(`.dropdown.dropdown-${type}`)[0];
+        const dropDownList = $(dropdown).find($(`.dropdown-content-${type}`))[0];
+        $(dropdown).on('click', () => handleOpenCloseDropdown(dropDownList, type));
+        $(dropdown, dropDownList).on('mouseleave', () => handleMouseLeave(dropDownList, type));
+      }
+
+      createNewAddNewUI = (parentElem, type) => {
+        let elem = 
+          `<div class="add-new-wrapper add-new-wrapper-${type}">
+            <div class="add-new-text add-new-text-${type}">ADD NEW</div>
+            <Input type="text" placeholder="ADD NEW" class="hide add-new-input add-new-input-${type}">
+          </div>`;
+        $(parentElem).append(elem);
+      }
+
+      createNewDropdowns = (type) => {
+        const dropdownElem = 
+        `<div class="dropdown dropdown-${type}">
+          <button class="dropbtn">
+            <span>${optionHeaders[type]}</span>
+            <span class="symbol">&#9662;</span>
+          </button>
+          <div class="select-option dropdown-content dropdown-content-${type}"></div>
+        </div>`;
+        const parentElem = $('.dropdowns-wrapper')[0];
+        $(parentElem).append(dropdownElem);
+        createDropDown(type);
+      }
+
+      createDeleteButton = () => {
+        $('.mike-dowd-300').append('<button class="delete-button">Delete Rules</button>');
+        const deleteButton = $(".delete-button")[0];
+        $(deleteButton).on('click', () => IdsToDeleteBy.length > 0 && deleteRules());
+      }
+
+      enableDeleteButton = enabled => {
+        let deleteButton = $('.delete-button')[0];
+        if(enabled && !$(deleteButton).hasClass('enabled')) {
+          $(deleteButton).addClass('enabled');
+        } else if(!enabled && $(deleteButton).hasClass('enabled')) {
+          $(deleteButton).removeClass('enabled');
+        }
+      }
+
+      createSubmitButton = () => {
+        $('.dropdowns-wrapper').append('<button class="submit-rule">Submit</button>');
+        const submitButton = $('.submit-rule')[0];
+        $(submitButton).on('click', () => createNewRule());
+        enableSubmitButton();
+      }
+
+      createCells = (cellData, rowElem) => {
+        const cellOrder = ['id', 'company_id', 'source', 'medium', 'campaign', 'content', 'term'];
+        const cellValues = cellOrder.map(cellType => cellData[cellType]);
+        cellValues.forEach((value, colIndex) => $(rowElem).append(`<div class="row-cell row-cell-${cellData.id}-${colIndex}">${value}</div>`));
+        $(rowElem).append(`<div class="row-cell row-cell-${cellData.id}-7"><input type="checkbox" onchange="updateIdsToDeleteBy(event.target, ${cellData.id})"/></div>`);
+      }
+
+      createRows = (rowData, targetElem, position = 'append') => {
+        if(position === 'append') {
+          $(targetElem).append( `<div class="table-row table-row-${rowData.id}"></div>` );
+        } else if(position === 'before') {
+          $(targetElem).before( `<div class="table-row table-row-${rowData.id}"></div>` );
+        }
+        let rowElem = $(`.table-row.table-row-${rowData.id}`)[0];
+        createCells(rowData, rowElem)
+      }
+
+      createTable = tableData => {
+        let table = $('.table-wrapper')[0];
+        tableData.forEach(row => createRows(row, table));
+        createDeleteButton();
+        makeDropdownsFromOptions();
+        createSubmitButton();
+      }
+
+      eraseTable = () => {
+        let rows = $('.table-row');
+        let deleteButton = $('.delete-button')[0];
+        let selectBoxes = $('.dropdowns-wrapper')[0];
+        $(rows).remove();
+        $(deleteButton).remove();
+        $(selectBoxes).empty();
+      }
+
+      (async () => {
+        rules = await getRulesById();
+        activeRuleRows = [...rules.map(() => true)];
+        optionListsKeys
+          .map(key => removeDuplicates(rules.map(row => row[key])))
+          .forEach((list, i) => optionLists[optionListsKeys[i]] = list);
+        createTable(rules);
+      })()
+    </script>
+  </body>
+</html>
+
+<!-- 
+  This HTML file includes th HTML, CSS and javascript for the rules page.
+  Some things to note: 
+  - It sounds like only the code from line 9 to 605 is required for Softr, but I included the rest of 
+    it to make it easier in case any local testing is required.
+  - This was developed with a base url that pointed to a local server, which, in turn talked to 
+    https://538f9qa745.execute-api.us-west-2.amazonaws.com'. The base url can be changed on line 264.
+  - The table is scrollable, the height of that table, which is currently set to 400px can be change
+    on line 23.
+  - It was discussed that the payload for a new rule could contain combinations of Content, Campaign and 
+    Term, with out Source or Media. It was my understanding that, in these cases the table's bahavior 
+    would be that, regardless of any filtering away of any other dropdown option, these options should 
+    always exist. However when I submitted this rule to the back end, I was seeing an error and suspect 
+    that, when more than 1 of these options is sent in the payload an error is thrown. 
+    Based on the conversation I had with Andrew, I don't know if this is proper backend behavior or not.
+    I was able to make the /newrule call with a single field for either Campaign, Content or Term. I wrote 
+    logic to deal with the possibility of multiple fields in the payload, and just commented that out.
+    If it is determined that multiple fields can be returned, the code should be commented back in and 
+    the code block above it should be commented out (or erased).
+    Also, there is a method called union() that is only used inside of the commented out code block.
+ -->
